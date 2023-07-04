@@ -1,6 +1,5 @@
 import telebot
 from telebot.types import ReplyKeyboardMarkup, ReplyKeyboardRemove
-from main import back
 from feedback.feedback import check_hits
 
 import random
@@ -15,6 +14,7 @@ TIME_LIMIT = 5
 def play_capitals(message, bot: telebot, user: dict) -> None:
     
     user['hits'] = 0
+    user['playedInThisRound'].clear()
     bot.send_message(message.chat.id, "How many capitals can you guess?")
     next_question(message, bot, user)
 
@@ -42,8 +42,11 @@ def check_answer(message, bot: telebot, user: dict, city: str):
     elif message.text == "/back":
         user['timer'].cancel()
         user.pop('timer')
-        bot.send_message(message.chat.id, "Exiting capitals contest mode", reply_markup = ReplyKeyboardRemove())
-        back(message)
+        user['hits'] = 0
+        user['playedInThisRound'].clear()
+        bot.send_message(message.chat.id, "Exiting Capitals Contest Mode", reply_markup = ReplyKeyboardRemove())
+        time.sleep(1)
+        bot.send_message(message.chat.id, "Select new Game Mode from Menu")
         return
 
     elif message.text == city:

@@ -4,7 +4,8 @@ import telebot
 from dotenv import load_dotenv
 from telebot.apihelper import ApiTelegramException
 
-from game_modes.capitals_game import *
+from game_modes.capitals_game import play_capitals
+from game_modes.population_game import play_population
 
 load_dotenv()
 TOKEN_BOT = os.getenv('TOKEN_BOT')
@@ -53,7 +54,7 @@ def capitals(message) -> None:
 
 @bot.message_handler(commands=["population"])
 def population(message) -> None:
-    pass
+    play_population(message, bot, users[message.chat.id])
 
 @bot.message_handler(commands=["flags"])
 def flags(message) -> None:
@@ -61,7 +62,14 @@ def flags(message) -> None:
 
 @bot.message_handler(commands=["back"])
 def back(message) -> None:
-    pass
+    
+    bot.send_message(message.chat.id, "No Game Mode Activated\n"
+        "Select one\n"
+        "\n"
+        "/capitals   : Classic game mode\n"
+        "/population : Higher-Lower mode\n"
+        "/flags      : Flags contest mode\n"
+        "\n")
 
 # ------------- MAIN ------------- #
 if __name__ == '__main__':
