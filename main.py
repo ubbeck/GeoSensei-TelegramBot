@@ -6,6 +6,7 @@ from telebot.apihelper import ApiTelegramException
 
 from game_modes.capitals_game import play_capitals
 from game_modes.population_game import play_population
+from game_modes.flags_game import play_flags
 
 load_dotenv()
 TOKEN_BOT = os.getenv('TOKEN_BOT')
@@ -58,7 +59,7 @@ def population(message) -> None:
 
 @bot.message_handler(commands=["flags"])
 def flags(message) -> None:
-    pass
+    play_flags(message, bot, users[message.chat.id])
 
 @bot.message_handler(commands=["back"])
 def back(message) -> None:
