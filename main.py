@@ -30,7 +30,7 @@ def set_commands() -> None:
 
 @bot.message_handler(commands=["start"])
 def start(message) -> None:
-    users[message.chat.id] = {'hits': 0, 'playedInThisRound' : []}
+    users[message.chat.id] = {'hits': 0, 'index' : []}
     bot.send_message(message.chat.id, "Welcome young grasshoper, choose a game mode \n"
         "\n"
         "/capitals   : Classic game mode\n"
