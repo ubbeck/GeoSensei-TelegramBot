@@ -51,7 +51,9 @@ def check_answer(message, bot: telebot, user: dict, c1: dict, c2: dict) -> None:
         bot.send_chat_action(message.chat.id, "typing")
         bot.send_message(message.chat.id, f"<b><i>INCORRECT</i></b>, {c2['country']} {c2['flag'].encode().decode('unicode_escape')} has {c2['population']: ,}",parse_mode="html", disable_web_page_preview=True, reply_markup=ReplyKeyboardRemove())
         bot.send_chat_action(message.chat.id, "typing")
+        time.sleep(1)
         bot.send_message(message.chat.id, ("&lt------- " + '<b><i>HITS </i></b>' + f"{user['hits']}" + " -------&gt"), parse_mode= "html", disable_web_page_preview= True)
+        time.sleep(1)
         check_hits(message, bot, user['hits'])
         time.sleep(1)
         bot.send_message(message.chat.id, "Use /population to play again")
@@ -60,8 +62,6 @@ def next_question(message, bot: telebot, user: dict) -> None:
     
     current_country = user['index'][user['hits']]
     next_country = user['index'][user['hits'] + 1]
-    print(f"Index: {current_country} -> country: {countries[current_country]['country']}")
-    print(f"Index: {next_country} -> country: {countries[next_country]['country']}")
 
     markup = ReplyKeyboardMarkup(
         one_time_keyboard = False,
