@@ -29,7 +29,11 @@ def check_answer(message, bot: telebot, user: dict, country: str) -> None:
     elif re.match(r'^/', message.text):
         user['timer'].cancel()
         user.pop('timer')
-        bot.send_message(message.chat.id, "Exiting flags contest mode", reply_markup = ReplyKeyboardRemove())
+        user['hits'] = 0
+        user['index'].clear()
+        bot.send_message(message.chat.id, "Exiting Flags contest mode", reply_markup = ReplyKeyboardRemove())
+        time.sleep(1)
+        bot.send_message(message.chat.id, "Select new Game Mode from Menu")
         return
     
     elif message.text == country:

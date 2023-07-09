@@ -1,6 +1,5 @@
 import telebot
 from telebot.types import ReplyKeyboardMarkup, ReplyKeyboardRemove
-from feedback.feedback import check_hits
 
 import random
 import copy
@@ -15,38 +14,24 @@ TIME_LIMIT = 5
 def play_population(message, bot: telebot, user: dict) -> None:
     
     user['hits'] = 0
-    user['playedInThisRound'].clear()
-    c1 = countries[random.randrange(NUM_COUNTRIES)]
-    c2 = None
-    user['playedInThisRound'].append(c1['country'])
-    bot.send_chat_action(message.chat.id, "typing")
+    user['index'].clear()
+    user['index'] = list(range(0, NUM_COUNTRIES))
+    random.shuffle(user['index'])
+    print(user['index'])
     bot.send_message(message.chat.id, "Which country is more populus?")
-    next_question(message, bot, user, c1, c2)
-
-def set_countries(user: dict, c1: dict, c2: dict) -> None:
-    
-    if(user['hits'] == 0):
-        c2 = copy.deepcopy(countries[random.randrange(NUM_COUNTRIES)])
-        while(c2['country'] in user['playedInThisRound']):
-            c2 = copy.deepcopy(countries[random.randrange(NUM_COUNTRIES)])
-    else:
-        c1 = copy.deepcopy(c2)
-        user['playedInThisRound'].append(c1['country'])
-        while(c2['country'] in user['playedInThisRound']):
-            c2 = copy.deepcopy(countries[random.randrange(NUM_COUNTRIES)])
-    return c1, c2
+    next_question(message, bot, user)
 
 def check_answer(message, bot: telebot, user: dict, c1: dict, c2: dict) -> None:
     
     if 'timer' not in user:
-        next_question(message, bot, user, c1, c2)
+        next_question(message, bot, user)
         return
     
     elif message.text == "/back":
         user['timer'].cancel()
         user.pop('timer')
         user['hits'] = 0
-        user['playedInThisRound'].clear()
+        user['index'].clear()
         bot.send_message(message.chat.id, "Exiting Higher-Lower Mode", reply_markup = ReplyKeyboardRemove())
         time.sleep(1)
         bot.send_message(message.chat.id, "Select new Game Mode from Menu")
@@ -60,7 +45,7 @@ def check_answer(message, bot: telebot, user: dict, c1: dict, c2: dict) -> None:
         bot.send_chat_action(message.chat.id, "typing")
         bot.send_message(message.chat.id, '<b><i>CORRECT</i></b>', parse_mode="html", disable_web_page_preview= True)
         user['hits'] += 1
-        next_question(message, bot, user, c1, c2)
+        next_question(message, bot, user)
     else:
         user['timer'].cancel()
         bot.send_chat_action(message.chat.id, "typing")
@@ -70,9 +55,12 @@ def check_answer(message, bot: telebot, user: dict, c1: dict, c2: dict) -> None:
         # check_hits(message, bot, user)
         bot.send_message(message.chat.id, "Use /population to play again")
 
-def next_question(message, bot: telebot, user: dict, c1:dict, c2: dict) -> None:
+def next_question(message, bot: telebot, user: dict) -> None:
     
-    c1, c2 = set_countries(user, c1, c2)
+    current_country = user['index'][user['hits']]
+    next_country = user['index'][user['hits'] + 1]
+    print(f"Index: {current_country} -> country: {countries[current_country]['country']}")
+    print(f"Index: {next_country} -> country: {countries[next_country]['country']}")
 
     markup = ReplyKeyboardMarkup(
         one_time_keyboard = False,
@@ -86,9 +74,9 @@ def next_question(message, bot: telebot, user: dict, c1:dict, c2: dict) -> None:
     bot.send_chat_action(message.chat.id, "typing")
     user['timer'] = threading.Timer(TIME_LIMIT, handle_timeout, args=[message, bot, user])
     user['timer'].start()
-    bot.send_message(message.chat.id, f"{c1['country']} {c1['flag'].encode().decode('unicode_escape')} {c1['population']: ,}")
-    answer = bot.send_message(message.chat.id, f"{c2['country']} {c2['flag'].encode().decode('unicode_escape')}", reply_markup=markup)
-    bot.register_next_step_handler(answer, check_answer, bot, user, c1, c2)
+    bot.send_message(message.chat.id, f"{countries[current_country]['country']} {countries[current_country]['flag'].encode().decode('unicode_escape')} {countries[current_country]['population']: ,}")
+    answer = bot.send_message(message.chat.id, f"{countries[next_country]['country']} {countries[next_country]['flag'].encode().decode('unicode_escape')}", reply_markup=markup)
+    bot.register_next_step_handler(answer, check_answer, bot, user, countries[current_country], countries[next_country])
 
 def handle_timeout(message, bot: telebot, user: dict) -> None:
     
@@ -96,5 +84,5 @@ def handle_timeout(message, bot: telebot, user: dict) -> None:
     user.pop('timer')
     bot.send_message(message.chat.id, "Lose By Time Out", reply_markup = ReplyKeyboardRemove())
     user['hits'] = 0
-    user['playedInThisRound'].clear()
+    user['index'].clear()
     bot.send_message(message.chat.id, "Use /population to play again")
