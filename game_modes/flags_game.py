@@ -57,7 +57,7 @@ def check_answer(message, bot: telebot, user: dict, country: str) -> None:
         time.sleep(1)
         check_hits(message, bot, user['hits'])
         time.sleep(1)
-        bot.send_message(message.chat.id, "Use /capitals to play again")
+        bot.send_message(message.chat.id, "Use /flags to play again")
 
 def next_question(message, bot: telebot, user: dict) -> None:
     
