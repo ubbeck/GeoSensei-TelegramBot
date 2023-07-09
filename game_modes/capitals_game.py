@@ -7,6 +7,7 @@ import time
 import re
 
 from countries_data import countries
+from feedback.feedback import check_hits
 
 NUM_COUNTRIES = len(countries)
 TIME_LIMIT = 5
@@ -54,7 +55,8 @@ def check_answer(message, bot: telebot, user: dict, city: str) -> None:
         bot.send_chat_action(message.chat.id, "typing")
         bot.send_message(message.chat.id, ("&lt------- " + '<b><i>HITS </i></b>' + f"{user['hits']}" + " -------&gt"), parse_mode= "html", disable_web_page_preview= True)
         time.sleep(1)
-        #check_hits(message, bot, user)
+        check_hits(message, bot, user['hits'])
+        time.sleep(1)
         bot.send_message(message.chat.id, "Use /capitals to play again")
 
 def next_question(message, bot: telebot, user: dict) -> None:

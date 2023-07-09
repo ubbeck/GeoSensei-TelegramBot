@@ -1,37 +1,47 @@
-gifs = [
+no_hits = [
     {
         "id": 1,
         "file_id": "",
         "collection": "no_hits"
-    },
+    }
+]
+
+less_5 = [
     {
-        "id": 2,
+        "id": 1,
         "file_id": "",
-        "collection": "no_hits"
-    },
+        "collection": "less_5"
+    }
+]
+
+over_5 = [
     {
-        "id": 3,
+        "id": 1,
         "file_id": "",
-        "collection": "no_hits"
-    },
+        "collection": "over_5"
+    }
+]
+
+over_15 = [
     {
-        "id": 4,
+        "id": 1,
         "file_id": "",
-        "collection": "no_hits"
-    },
+        "collection": "over_15"
+    }
+]
+
+over_25 = [
     {
-        "id": 5,
+        "id": 1,
         "file_id": "",
-        "collection": "no_hits"
-    },
+        "collection": "over_25"
+    }
+]
+
+over_50 = [
     {
-        "id": 6,
+        "id": 1,
         "file_id": "",
-        "collection": "no_hits"
-    },
-    {
-        "id": 7,
-        "file_id": "",
-        "collection": "no_hits"
+        "collection": "over_50"
     }
 ]
