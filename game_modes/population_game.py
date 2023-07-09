@@ -54,7 +54,7 @@ def check_answer(message, bot: telebot, user: dict, c1: dict, c2: dict) -> None:
         time.sleep(1)
         bot.send_message(message.chat.id, ("&lt------- " + '<b><i>HITS </i></b>' + f"{user['hits']}" + " -------&gt"), parse_mode= "html", disable_web_page_preview= True)
         time.sleep(1)
-        check_hits(message, bot, user['hits'])
+        # check_hits(message, bot, user['hits'])
         time.sleep(1)
         bot.send_message(message.chat.id, "Use /population to play again")
 
