@@ -17,7 +17,6 @@ def play_population(message, bot: telebot, user: dict) -> None:
     user['index'].clear()
     user['index'] = list(range(0, NUM_COUNTRIES))
     random.shuffle(user['index'])
-    print(user['index'])
     bot.send_message(message.chat.id, "Which country is more populus?")
     next_question(message, bot, user)
 
