@@ -9,7 +9,7 @@ The bot has three game modes, capitals, flags and population (Higher-Lower).
 In Capitals and Flags modes, the bot displays 3 possible answers on a custom keyboard buttons, in Higher-Lower mode there are only these two buttons. The player has a time limit to answer (5 seconds by default) in all modes.   
 ## Installation
 1. Clone this repository on your local machine.
-2. Install the project dependencies by running pip install -r requirements.txt.
+2. Install the project dependencies by running pip install -r requirements.txt
 3. Get a Telegram bot token by following the instructions on [BotFather](https://core.telegram.org/bots/features#creating-a-new-bot)
 4. Create an .env file in the root directory of the project and add the following content:
    
